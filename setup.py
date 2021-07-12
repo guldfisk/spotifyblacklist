@@ -23,5 +23,6 @@ setup(
         'appdirs',
         'dbus-python',
         'pgi',
+        'click',
     ],
 )

@@ -11,6 +11,10 @@ class BlackList(object):
     def __init__(self, song_names: t.AbstractSet[str]):
         self._song_names = song_names
 
+    @property
+    def song_names(self) -> t.AbstractSet[str]:
+        return self._song_names
+
     @classmethod
     def from_file(cls) -> BlackList:
         os.makedirs(paths.APP_DATA_PATH, exist_ok = True)
