@@ -28,7 +28,6 @@ class SkipperService(object):
 
     def reload_black_list(self) -> None:
         self._black_list = BlackList.from_file().from_file()
-        print('reloaded black_list')
 
     def check_black_list(self) -> bool:
         last_modified = os.stat(paths.LIST_PATH).st_mtime
@@ -39,7 +38,7 @@ class SkipperService(object):
 
     def _signal_handler(self, *args, **kwargs) -> None:
         if args and args[0] == 'org.mpris.MediaPlayer2.Player':
-            if args[1]['PlaybackStatus'] == 'Playing':
+            if args[1].get('PlaybackStatus') == 'Playing':
                 song_title = args[1]['Metadata']['xesam:title']
                 if (
                     song_title in self._black_list

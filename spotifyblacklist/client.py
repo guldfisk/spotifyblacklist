@@ -5,6 +5,7 @@ import dbus
 
 from spotifyblacklist import paths
 from spotifyblacklist.blacklist import BlackList
+from spotifyblacklist.spotifyclient import get_interface
 
 
 class AliasedGroup(click.Group):
@@ -46,7 +47,7 @@ def list_blacklist() -> None:
 @main.command(name = 'add')
 def add() -> None:
     """
-    Add current song to list.
+    Add current song to blacklist.
     """
     with open(paths.LIST_PATH, 'a') as f:
         f.write('\n')
@@ -57,6 +58,30 @@ def add() -> None:
                 'org.freedesktop.DBus.Properties',
             ).Get('org.mpris.MediaPlayer2.Player', 'Metadata')['xesam:title'] + '\n'
         )
+
+
+@main.command(name = 'next')
+def next_song() -> None:
+    """
+    Next song.
+    """
+    get_interface().Next()
+
+
+@main.command(name = 'previous')
+def previous_song() -> None:
+    """
+    Previous song.
+    """
+    get_interface().Previous()
+
+
+@main.command(name = 'playpause')
+def previous_song() -> None:
+    """
+    Play / Pause.
+    """
+    get_interface().PlayPause()
 
 
 if __name__ == '__main__':
