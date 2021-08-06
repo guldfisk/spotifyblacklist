@@ -8,6 +8,7 @@ from gi.repository import GLib
 
 from spotifyblacklist import paths
 from spotifyblacklist.blacklist import BlackList
+from spotifyblacklist.spotifyclient import get_interface
 
 
 class SkipperService(object):
@@ -18,8 +19,6 @@ class SkipperService(object):
         self._dbus_loop = DBusGMainLoop()
 
         self._session_bus = dbus.SessionBus(mainloop = self._dbus_loop)
-        self._proxy = self._session_bus.get_object('org.mpris.MediaPlayer2.spotify', '/org/mpris/MediaPlayer2')
-        self._spotify_interface = dbus.Interface(self._proxy, dbus_interface = 'org.mpris.MediaPlayer2.Player')
 
         self._lt = 0
         self._last_skip = ''
@@ -47,7 +46,7 @@ class SkipperService(object):
                         or self._last_skip != song_title
                     )
                 ):
-                    self._spotify_interface.Next()
+                    get_interface(self._session_bus).Next()
                     self._lt = time.time()
                     self._last_skip = song_title
 
