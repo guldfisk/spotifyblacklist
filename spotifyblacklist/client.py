@@ -84,5 +84,25 @@ def previous_song() -> None:
     get_interface().PlayPause()
 
 
+@main.command(name = 'up')
+@click.option('--amount', '-a', default = 10, type = int, help = 'Percentage point value increase', show_default = True)
+def volume_up(amount: int) -> None:
+    """
+    Adjust volume up.
+    """
+    from volume import adjust_volume
+    adjust_volume(amount)
+
+
+@main.command(name = 'down')
+@click.option('--amount', '-a', default = 10, type = int, help = 'Percentage point value decrease', show_default = True)
+def volume_down(amount: int) -> None:
+    """
+    Adjust volume down.
+    """
+    from volume import adjust_volume
+    adjust_volume(-amount)
+
+
 if __name__ == '__main__':
     main()
