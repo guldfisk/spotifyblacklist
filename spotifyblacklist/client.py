@@ -45,7 +45,8 @@ def list_blacklist() -> None:
 
 
 @main.command(name = 'add')
-def add() -> None:
+@click.option('--stay', default = False, type = bool, is_flag = True, show_default = True, help = 'Don\'t skip.')
+def add(stay: bool) -> None:
     """
     Add current song to blacklist.
     """
@@ -58,6 +59,8 @@ def add() -> None:
                 'org.freedesktop.DBus.Properties',
             ).Get('org.mpris.MediaPlayer2.Player', 'Metadata')['xesam:title'] + '\n'
         )
+    if not stay:
+        get_interface().Next()
 
 
 @main.command(name = 'next')
