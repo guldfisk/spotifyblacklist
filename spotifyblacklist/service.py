@@ -37,18 +37,17 @@ class SkipperService(object):
 
     def _signal_handler(self, *args, **kwargs) -> None:
         if args and args[0] == 'org.mpris.MediaPlayer2.Player':
-            if args[1].get('PlaybackStatus') == 'Playing':
-                song_title = args[1]['Metadata']['xesam:title']
-                if (
-                    song_title in self._black_list
-                    and (
-                        time.time() > self._lt + 2
-                        or self._last_skip != song_title
-                    )
-                ):
-                    get_interface(self._session_bus).Next()
-                    self._lt = time.time()
-                    self._last_skip = song_title
+            song_title = args[1]['Metadata']['xesam:title']
+            if (
+                song_title in self._black_list
+                and (
+                    time.time() > self._lt + 2
+                    or self._last_skip != song_title
+                )
+            ):
+                get_interface(self._session_bus).Next()
+                self._lt = time.time()
+                self._last_skip = song_title
 
     def run(self) -> None:
         self.check_black_list()
